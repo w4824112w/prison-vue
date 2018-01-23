@@ -1,0 +1,98 @@
+<% content_for :header do %>
+  <section class="content-header">
+    <h1><%= session[:prison_title] %>添加商品</h1>
+    <ol class="breadcrumb">
+    <li><a href="/dashboard"><i class="fa fa-dashboard"></i> 首页 </a></li>
+    <li class="active">商品管理</li>
+    <li class="active">添加商品</li>
+    </ol>
+  </section>
+<% end %>
+
+<% content_for :content do %>
+  <section class="content"  style="margin-top:-25px;">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="box box-info">
+        <%= form_for @item, method: "post", html: {:class => 'form-horizontal', multipart: true} do |f| %>
+          <div class="box-header with-border">
+            <div class="box-title"></div>
+          </div>
+          <div class="box-body">
+            <div class="form-group" style="padding:10px 100px 20px">
+              <label for="inputEmail3" class="col-sm-2 control-label">商品条码</label>
+              <div class="col-sm-10">
+                <%= f.text_field :barcode, :placeholder =>'请填写商品条码',size: "60x12",:class => 'form-control'%>
+                <label class="control-label error"></label>
+              </div>
+
+            </div>
+            <div class="form-group" style="padding:10px 100px 20px">
+              <label for="inputEmail3" class="col-sm-2 control-label">商品名称</label>
+              <div class="col-sm-10">
+                <%= f.text_field :title,:placeholder =>'请填写商品名称' , :class => 'form-control' %>
+                <%= f.hidden_field :jail_id, :value => session[:jail_id] %>
+                <label class="control-label error"></label>
+              </div>
+
+            </div>
+            <div class="form-group" style="padding:10px 100px 20px">
+              <label for="inputEmail3" class="col-sm-2 control-label">商品简介</label>
+              <div class="col-sm-10">
+                <%= f.text_area :description, :placeholder =>'请填写商品简介',size: "60x12" ,:class => 'form-control'%>
+                <label class="control-label error"></label>
+              </div>
+            </div>
+            <div class="form-group" style="padding:10px 100px 20px">
+              <label for="inputEmail3" class="col-sm-2 control-label">商品单位</label>
+              <div class="col-sm-10">
+                <%= f.text_field :unit,:placeholder =>'请填写商品单位' ,:class => 'form-control'%>
+                <label class="control-label error"></label>
+              </div>
+            </div>
+            <div class="form-group" style="padding:10px 100px 20px">
+              <label for="inputEmail3" class="col-sm-2 control-label">商品单价</label>
+              <div class="col-sm-10">
+                <%= f.text_field :price,:placeholder =>'请填写商品单价' ,:class => 'form-control'%>
+                <label class="control-label error"></label>
+              </div>
+            </div>
+            <div class="form-group" style="padding:10px 100px 20px">
+              <label for="inputEmail3" class="col-sm-2 control-label">商品图片</label>
+              <div class="col-sm-10">
+                <%= f.file_field :avatar,:class => 'pic'%>
+                <label class="control-label error"></label>
+              </div>
+            </div>
+            <div class="form-group" style="padding:10px 100px 20px">
+              <label for="inputEmail3" class="col-sm-2 control-label">生产厂家</label>
+              <div class="col-sm-10">
+                <%= f.text_field :factory,:placeholder =>'请填写生产厂家',:class => 'form-control' %>
+                 <label class="control-label error"></label>
+              </div>
+            </div>
+            <div class="form-group" style="padding:10px 100px 20px">
+              <label for="inputEmail3" class="col-sm-2 control-label">商品种类</label>
+              <div class="col-sm-10"><%= collection_select(:item, :category_id, Category.all, :id, :title) %></div>
+            </div>       
+          <div class="box-footer">
+            <%= f.button "更新", :class => "btn btn-info pull-right save btn-add" %>
+          </div>
+  
+            <% if @item.errors.any?%>
+            <div id="error_explanation">
+              <h2><%= pluralize(@item.errors.count,"error")%>shangpin cunru cuowu:</h2>
+              <ul>
+                <% @item.errors.full_messages.each do |msg|%>
+                <li><%= msg%></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+        <% end %>
+        </div>
+      </div>
+    </div>
+  </section>
+<% end %>

@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  jail_id: 1
+  type_id: 1
+  name: MyString
+  phone: MyString
+  uuid: MyString
+
+two:
+  jail_id: 1
+  type_id: 1
+  name: MyString
+  phone: MyString
+  uuid: MyString

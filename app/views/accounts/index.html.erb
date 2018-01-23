@@ -1,0 +1,141 @@
+<% content_for :header do %>
+  <section class="content-header">
+    <%= session[:prison_title] %>
+    <div class="row">
+      <div class="col-xs-12">
+        <ol class="breadcrumb" class="pull-left" style="font-size:medium;background-color:#edf6fa;font-size:12px;">
+          <li><a href="/dashboard"><i class="fa fa-dashboard"></i> 首页 </a></li>
+          <li class="active">囚犯账户信息统计</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+<% end %>
+
+<% content_for :content do %>
+
+  <section class="content" style="margin-top:-25px;" ng-app="accounts_app" ng-controller="accountsCtrl">
+
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="box box-info">
+          <div class="box-body">
+            <!--页数下拉列表-->
+            <div style='margin:20px 0 0 1%' class='pull-left'>
+              <select style="width:150px;" class="form-control input-xsmall pull-left" ng-change='limitChange()' ng-model='limit'>
+                <option value="1">1</option>
+                <option value="10" ng-selected="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+                <option value="50">50</option>
+              </select>
+              <p class='pull-right' style='padding:5px 0 0 5px'>条记录</p>
+            </div>
+            <!--搜索框-->
+            <div class="pull-right col-xs-4" style="margin-top:20px;margin-bottom:20px">
+              <input id="searchingContent" type="text" placeholder="请输入姓名、囚号" class="pull-left"
+                     style="width:80%;font-size:13.5px;" ng-model="searchingContent"/>
+              <button id="searchingBtn" class="btn btn-default btn-sm" ng-click="search()" ng-disabled="isAbleSearching">搜索</button>
+            </div>
+
+            <br>
+            <div class="row">
+              <div class="col-sm-12">
+                <table class="table table-striped table-hover table-bordered" id="tTrolleys">
+        					<thead>
+        						<tr>
+　	                   <th>囚号</th>
+      						  	<th>姓名</th>
+    					        <!-- <th>性别</th> -->
+    					        <th>罪名</th>
+    					        <th>监区</th>
+                      <th>账号余额</th>
+    					        <th>操作记录</th>
+        						</tr>
+        					</thead>
+                  <tbody>
+                    <tr ng-repeat="p in prisoners track by $index" class="{{$index%2==0?'even':'odd'}}">
+                      <td><p style='line-height:50px;text-align:left' ng-bind="p.prisoner_number"></p></td>
+                      <td><p style='line-height:50px;text-align:left' ng-bind="p.name"></p></td>
+                      <!-- <td><p style='line-height:50px;text-align:left'>{{p.gender | gender}}</p></td> -->
+                      <td><p style='line-height:50px;text-align:left' ng-bind="p.crimes"></p></td>
+                      <td><p style='line-height:50px;text-align:left' ng-bind="p.prison_area"></p></td>
+                      <td><p style='line-height:50px;text-align:left'>{{p.balance?p.balance:'不存在'}}</p></td>
+                      <td>
+                        <p style='line-height:50px;text-align:left'>
+                          <a class='pull-left' style="width:100%;text-decoration:none;cursor:pointer;text-align:center;" ng-click="showAccountRecords(p.account_id,p.name)">查看账户记录</a>
+                        </p>
+                      </td>
+                    </tr>
+                  </tbody>
+        				</table>
+                <!-- Bootstrap 分页 -->
+                <div class='container'>
+                  <div class="col-xs-10" align='right'>
+                     <p class='pull-left' style='margin-top:28px'>总共{{totalPages}}页,总共{{total}}条记录</p>
+                     <ul id="paginator" class="pagination">
+                     </ul>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!--查看账户记录模态框-->
+    <div class="modal modal-default fade" id="accountModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="box-solid">
+                <div class="box-header">
+                  <h3　class="box-title">服刑人员姓名:<b>{{account_details.prisoner_name}}</b></h3><span class="prisoner_name"></span>
+                  <span>的账户详情</span>
+                </div>
+                <div class="box-body">
+                  <table  class="table table-striped table-hover table-bordered" id="account_details">
+		 								<thead>
+                      <tr>
+                        <th>操作金额</th>
+                        <th>操作原因</th>
+                        <th>操作时间</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td ng-bind="account_details.amount"></td>
+                        <td ng-bind="account_details.reason"></td>
+                        <td ng-bind="account_details.created_at"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <!-- Bootstrap 分页 -->
+                  <!-- <div class='container'>
+                    <div class="col-xs-10" align='right'>
+                       <p class='pull-left' style='margin-top:28px'>总共{{totalPages}}页,总共{{total}}条记录</p>
+                       <ul id="paginator_modal" class="pagination">
+                       </ul>
+                    </div>
+                  </div> -->
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+
+<% end %>

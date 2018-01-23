@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  prisoner_number: MyString
+  name: MyString
+  gender: MyString
+  crimes: MyString
+
+two:
+  prisoner_number: MyString
+  name: MyString
+  gender: MyString
+  crimes: MyString

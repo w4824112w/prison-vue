@@ -1,0 +1,2 @@
+module MailBoxesHelper
+end

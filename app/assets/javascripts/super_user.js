@@ -1,0 +1,10 @@
+(function($){
+  $.ajax({
+  	type:"get",
+	url:"/super_user",
+	dataType:"json",
+	success:function(data){
+		console.log(data);
+	}
+  })
+})(jQuery)

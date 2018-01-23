@@ -1,0 +1,80 @@
+<div class="show_header">
+ <div class="col-md-16">
+  <div class="box-header">
+   <p style="font-size:24px;"><%= @new.title.html_safe%></p>
+   <div style="margin-top:-5px;margin-bottom:-10px;"><span style="font-size:12px" class="mailbox-read-time"><%= @new.updated_at%></span></div>
+  </div>
+  <!-- /.box-header -->
+   <div class="box-body">
+     <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+        <% unless @new.image.url == '/images/original/missing.png' %>
+        <div class="carousel-inner">
+          <div class="item active" style="background-color:transparent">
+            <!-- <img src="<%= @new.image.url %>" alt="" style="max-width:100%;height:200px;"> -->
+            <img id="imgPreview" src="<%= @new.image.url %>" alt="" style="display:block;max-width:100%;height:200px;margin:0 auto;">
+          </div>
+        </div>
+      <% end %>
+      </div>
+      <br>
+      <div class="contents" style="margin-top:-15px;">
+		<p style="font-size:17px;line-height:25px;"><%= @new.contents.html_safe%></p>
+	  </div>
+   </div>
+ </div>
+</div>
+
+<footer class="main-footer" style="font-size:10px;background-color:#F0F0F0;text-align:center;">
+<!--    <strong style="line-height:10px;"><a style="font-size:10px;" href="http://www.sinog2c.com">国科政信科技(北京)股份有限公司</a></strong> 技术支持.-->
+</footer>
+
+<!-- 点击图片放大的遮罩层 -->
+<div id="imgCover" class="" style="position:fixed;left:0;top:0;right:0;bottom:0;background-color:rgba(0,0,0,0.5);display:none;">
+  <img src="" alt="" style="position:absolute;left:0;top:25%;right:0;display:none;width:100%;height:100%">
+</div>
+
+<script>
+	$(document).ready(function(){
+	   /*find show_title 's width and height*/
+		//var height = $(".show_title").height();
+		var window_width = $(window).width();
+		var width = $(".show_title").width();
+		//var p_height = $(".show_title").find("p").height();
+		var p_width = $(".show_title").find("p").width();
+		//var height_gap = height - p_height;
+		var width_gap = width - p_width;
+		$(".show_title").css({"padding-left":width_gap+"px"})
+	   /*pic center*/
+		var pics_width = $(".show_pics").width();
+		//alert(pics_width);
+		$("img").css({"width":window_width-10+"px"});
+    // console.log(document.getElementById('imgPreview'));
+    // $('#imgPreview').css('width',756/373*200 +'px');
+    // console.log($('#imgPreview').css('width'));
+
+    //点击小图片执行的方法
+    $('#imgPreview').on('click',function(){
+      // console.log('image has been clicked');
+      var imgSrc = $('#imgPreview').attr('src');
+      if($('#imgCover').css('display') == 'none'){
+        $('#imgCover').css({
+          'display':'block'
+        }).children('img').css({
+          'display':'block'
+        });
+        $('#imgCover').children('img').attr('src',imgSrc);
+      }
+    });
+
+    //点击遮罩层的图片执行的方法
+    $('#imgCover').on('click',function(){
+      if($('#imgCover').css('display') == 'block'){
+        $('#imgCover').css({
+          'display':'none'
+        }).children('img').css({
+          'display':'none'
+        });
+      }
+    })
+	})
+</script>

@@ -1,0 +1,143 @@
+
+<% content_for :header do %>
+  <section class="content-header">
+    <p style="display:none;"><%= session[:jail_id] %></p>
+    <div class="row">
+      <div class="col-xs-12">
+        <ol class="breadcrumb" style="font-size:medium;">
+          <li><a href="/dashboard"><i class="fa fa-dashboard"></i> 首页 </a></li>
+          <li class="active">修改用户密码</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+<% end %>
+
+<% content_for :content do %>
+<div class="row" style="height:20em;background-color:#4f98c2;box-shadow:5px 5px #4f98c2;">
+
+  <div class="login-box" style="margin-top:10px;margin-bottom:0px;">
+    <div class="login-logo" >
+      <a href="javascript:void(0)" style="color:white;">修改用户密码</a>
+    </div><!-- /.login-logo -->
+    <div class="test">
+      <div class="login-box-body" style="background-color:#4f98c2;margin-top:-5px;padding-top:0px;">
+
+          <!-- <div class="form-group has-feedback">
+            <input type="text" class="form-control" placeholder=“” name="prison" value="<%= session[:jail_title] %>" disabled>
+            <span class="fa fa-university form-control-feedback"></span>
+          </div>
+
+          <div class="form-group has-feedback">
+            <input type="text" class="form-control" placeholder="" name="username" id="username" value="<%= session[:user_name] %>" disabled>
+            <span class="fa fa-user form-control-feedback"></span>
+          </div> -->
+
+          <div class="form-group has-feedback">
+            <input type="password" class="form-control" placeholder="原密码" name="password1" id="ori_password">
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+          </div>
+
+          <div class="form-group has-feedback">
+            <input type="password" class="form-control" placeholder="新密码" name="password2" id="new_password">
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+          </div>
+
+          <div class="form-group has-feedback">
+            <input type="password" class="form-control" placeholder="确认新密码" name="password3" id="con_password">
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+          </div>
+
+          <div class="row">
+            <div class="col-xs-8">
+              <!--  <a href="#">忘记密码</a><br> -->
+              <!-- <input id="remember-pwd" type="checkbox" name="" value="" checked>
+              <label for="remember-pwd">记住密码</label> -->
+              <span class="pwd-remind pull-left text-danger"></span>
+              <a href="/registrations" id="turn-login" class='hidden'>跳转到登录页面</a>
+            </div><!-- /.col -->
+            <div class="col-xs-4">
+              <button id="confirm-modify" style="background-color:#186c9c;" type="button" class="btn btn-primary btn-block btn-flat">确定修改</button>
+            </div><!-- /.col -->
+          </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="/js/jquery-1.11.3.min.js"></script>
+
+<script type="text/javascript">
+  (function($){
+
+    //修改密码
+    $('#confirm-modify').on('click',function() {
+      // console.log('click');
+      var ori_password = $('#ori_password').val();
+      var new_password = $('#new_password').val();
+      var con_password = $('#con_password').val();
+
+      if(ori_password != '' && new_password != '') {
+
+        if(new_password == con_password){
+          // console.log('same');
+          $('.pwd-remind').html('');
+          $.ajax({
+            type:'post',
+            url:'/super_user/modify',
+            data:{
+              'password':ori_password,
+              'new_password':new_password,
+            },
+            success:function(data){
+              // console.log(data);
+              if(data == true){
+                $('.pwd-remind').html('修改成功');
+                $.ajax({
+                  type:'delete',
+                  // url:'get/cancel',
+                  url:'/logout',
+                  success:function(res){
+                    console.log(res);
+                    // $('#go-login').click();
+                    // history.go(0);
+                    // document.getElementById('turn-login').click();
+                  },
+                  error:function(err){
+                    console.log(err);
+                  },
+                  complete:function(){
+                    $('#confirm-modify').prop('disabled',true);
+                    var i = 4;
+                    setInterval(function(){
+                      $('.pwd-remind').html('修改成功,还有'+i+'s，跳回登录界面');
+                      i--;
+                      if(i==0){
+                        document.getElementById('turn-login').click();
+                      }
+                    },1000);
+                  }
+                });
+              } else if(data.code == 500) {
+                $('#ori_password').focus();
+                $('.pwd-remind').html('修改失败，'+data.msg);
+              }
+            },
+            error:function(err){
+              console.log(err);
+            }
+          });
+        } else {
+          // console.log('difference',new_password,con_password);
+          $('#con_password').focus();
+          $('.pwd-remind').html('新密码和确认密码不一致');
+        }
+      }
+    });
+
+  })(jQuery)
+</script>
+
+<% end %>

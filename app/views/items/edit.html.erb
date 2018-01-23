@@ -1,0 +1,76 @@
+<% content_for :header do %>
+  <section class="content-header">
+    <h1><%= session[:prison_title] %></h1>
+    <div class="row">
+      <div class="col-xs-12">
+        <ol class="breadcrumb" style="font-size:medium;">
+          <li><a href="/dashboard"><i class="fa fa-dashboard"></i> 首页 </a></li>
+          <li class="active">商品信息管理</li>
+          <li class="active">商品信息编辑</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+<% end %>
+
+<% content_for :content do %>
+  <section class="content" style="margin-top:-25px;">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <div class="box box-info">
+        <%= form_for @item, method: "patch", html: {:class => 'form-horizontal', multipart: true} do |f| %>
+          <div class="box-header with-border">
+            <div class="box-title"></div>
+          </div>
+          <div class="box-body">
+            <div class="input-group" style="padding:10px 100px 20px">
+              <span class="input-group-addon input-group-lg">商品条码</span>
+              <%= f.text_field :barcode, :placeholder =>'请填写商品条码',size: "60x12",
+              :class => 'form-control' %>
+            </div>
+            <div class="input-group" style="padding:10px 100px 20px">
+              <span class="input-group-addon input-group-lg">商品名称</span>
+              <%= f.text_field :title,:placeholder =>'请填写商品名称' , :class => 'form-control' %>
+              <%= f.hidden_field :jail_id, :value => session[:jail_id] %>
+            </div>
+            <div class="input-group" style="padding:10px 100px 20px">
+              <span class="input-group-addon input-group-lg">商品简介</span>
+              <%= f.text_area :description, :placeholder =>'请填写商品简介',size: "60x12" ,
+              :class => 'form-control' %>
+            </div>
+            <div class="input-group" style="padding:10px 100px 20px">
+              <span class="input-group-addon input-group-lg">单位</span>
+              <%= f.text_field :unit,:placeholder =>'请填写商品单位' ,
+              :class => 'form-control' %>
+            </div>
+            <div class="input-group" style="padding:10px 100px 20px">
+              <span class="input-group-addon input-group-lg">单价</span>
+              <%= f.text_field :price,:placeholder =>'请填写商品单价',
+              :class => 'form-control'  %>
+            </div>
+
+            <div class="input-group" style="padding:10px 100px 20px">
+              <div class="btn btn-default btn-file">
+                <i class="fa fa-paperclip"></i> 添加商品图片
+                <%= f.file_field :avatar, :class => 'pic',:class => 'form-contrller' %>
+              </div> 
+            </div> 
+
+            <div class="input-group" style="padding:10px 100px 20px">
+              <span class="input-group-addon input-group-lg">生产厂家</span>
+              <%= f.text_field :factory,
+              :class => 'form-control'  %>
+            </div>
+            <div class="input-group" style="padding:10px 100px 20px">
+              <span class="input-group-addon input-group-lg">请选择商品部类</span>
+              <%= collection_select(:item, :category_id, Category.all, :id, :title) %>
+            </div>       
+          <div class="box-footer">
+            <%= f.button "更新", :class => "btn btn-info pull-right save btn-add" %>
+          </div>
+        <% end %>
+        </div>
+      </div>
+    </div>
+  </section>
+<% end %>

@@ -1,0 +1,220 @@
+<% content_for :header do %>
+  <section class="content-header">
+	  <h1><%= session[:prison_title] %></h1>
+	  <div class="row">
+      <div class="col-xs-12">
+        <ol class="breadcrumb" style="font-size:medium;">
+          <li><a href="/dashboard"><i class="fa fa-dashboard"></i> 首页 </a></li>
+          <li class="active">法律信息管理</li>
+          <li class="active">添加法律信息</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+<% end %>
+
+<% content_for :content do %>
+  <section class="content" style="margin-top:-25px;">
+  	<div class="row">
+  	  <div class="col-xs-12">
+  	  	<div class="box box-info">
+  	  	<%= form_for @law, method: "post", html: {:class => 'form-horizontal', multipart: true, name:"form_n"} do |f| %>
+  	  	  <div class="box-header with-border">
+  	  	  	<div class="box-title"></div>
+  	  	  </div>
+  		    <div class="box-body">
+
+            <div id="delimg">
+
+            </div>
+
+  		      <div class="input-group" style="padding:10px 100px 20px">
+              <span class="input-group-addon input-group-lg">法律名称</span>
+              <%= f.text_field :title, :placeholder =>'请填写法律名称' , :class => 'form-control text-not-null' %>
+              <%= f.hidden_field :jail_id, :value => session[:jail_id] %>
+            </div>
+
+            <!-- <div class="input-group" style="padding:10px 100px 20px">
+              <span class="input-group-addon input-group-lg">法律简介</span>
+              <div class="pro_tools" id="testSaveButtons"></div>
+              <div id="frame" class="enty-editor">
+                <%= f.text_area :contents,size: "60x12" ,:id => "frameToText",:class =>"se_textarea text-area-not-null"%>
+              </div>
+            </div> -->
+
+            <div class="input-group area" style="padding:10px 100px 20px">
+
+                <%= f.text_area :contents, size: "60x12" ,:id => "frameToText",:class =>"se_textarea text-area-not-null", :style => 'width:160%;height:400px;visibility:hidden;font-size:16px', :value =>'请填写法律简介'%>
+
+            </div>
+
+            <div class="input-group" style="padding:10px 100px 20px">
+              <div class="btn btn-default btn-file">
+                <i class="fa fa-paperclip"></i> 添加图片
+                <!-- <form method="get" action="xznetwork" name="textfile"> -->
+                  <%= f.file_field :image, :class => 'form-control pic',:id=>"fileuploade",:style=>'width:150px' %>
+                <!-- </form> -->
+              </div>
+
+              <span class="imagefileName"></span>
+
+              <div id="localImag">
+                 <img id="preview" src="" width="100" height="100" style="display: block;margin-top:20px;" />
+              </div>
+
+            </div>
+
+    	  	  <div class="box-footer">
+
+              <input type="button" value="更新" class="btn btn-info pull-right save btn-add" onclick="checkForm()" />
+    	  	  </div>
+  	  	<% end %>
+  	  	</div>
+  	  </div>
+  	</div>
+  </section>
+  <script type="text/javascript" src="/plugins/sinaEditor/sinaeditor_min.js"></script>
+  <script charset="utf-8" src="/plugins/kindeditor/kindeditor-all.js"></script>
+  <script charset="utf-8" src="/plugins/kindeditor/lang/zh-CN.js"></script>
+  <script charset="utf-8" src="/plugins/picturePreview/picturePreview.js"></script>
+
+  <script>
+  var editor;
+  KindEditor.ready(function(K) {
+    //声明3个数组
+    //页面一打开的图片
+    var oldimgsrc=[];
+    //所有上传的图片
+    var uploadimgsrc=[];
+    //最后保存下来的图片
+    var saveimgsrc=[];
+    //创建一个编辑器对象
+      editor = K.create('#frameToText', {
+      resizeType : 1,
+      allowPreviewEmoticons : false,
+      uploadJson:'/prisoners/upload_img',
+      allowImageUpload : true,
+      allowFileManager:false, //允许对上传图片进行管理
+      allowImageRemote:false,
+      //上传图片后触发的事件
+       afterUpload: function(url){
+          uploadimgsrc.push(url);
+       }, //图片上传后，将上传内容同步到textarea中
+       afterCreate:function(){
+       },
+       //当编辑器失去焦点
+       afterBlur:function(){
+        var imgarr = this.edit.iframe.get().contentWindow.document.body.getElementsByTagName('img');
+        var content = this.edit.iframe.get().contentWindow.document.body.innerHTML;
+        $("#frameToText").html(content);
+        $(imgarr).each(function(index,obj){
+          saveimgsrc.push($(obj).attr('src'));
+        });
+
+        //合并数组
+        var allimgsrc=uploadimgsrc.concat(saveimgsrc);
+        //删除相同的元素
+        var uniq=new arr_uniq(allimgsrc);
+        uniq.uniq();
+        var resultimg=[];
+        //如果没有上传新图片
+        if( uploadimgsrc.length==0 ) {
+          //比较不同的元素
+          resultimg=slectArray(allimgsrc,saveimgsrc);
+        } else {
+          resultimg=slectArray(allimgsrc,saveimgsrc);
+        }
+      //比较出页面一打开的图片和编辑完之后图片中不同路径的图片
+        $('#delimg').html("");
+        var del_img="";
+        for(var r in resultimg){
+            if($('#delimg').size()==1){
+            //隐藏域为delimg[]，保存多个删除的图片路径
+              $('#delimg').append('<input type="hidden" name="delimg[]" value="'+resultimg[r]+'"/>');
+            }else{
+              $('#frameToText').after('<span id="delimg"><input type="hidden" name="delimg[]" value="'+resultimg[r]+'"/></span>');
+            }
+        }
+      },
+      items : [
+        'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+        'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+        'insertunorderedlist','|','image']
+        //上传图片后触发的事件
+
+    })
+  })
+
+  function pickimg(content){
+    var re=/src="(.*?)\/upload\/(.*?)"/ig;
+    arr=content.match(re);
+    var ar=[];
+    var tmp='';
+    for(var i in arr){
+      tmp=arr[i].split('upload')[1];
+      ar[i]=tmp.replace('"','');
+    }
+    return ar;
+  }
+  //返回数组不相同的元素
+  function slectArray(a,b){
+    var c=[];
+    for(var i=0;i<a.length;i++){
+      if(b.indexOf(a[i])<0 ){
+        c.push(a[i]);
+      }
+    }
+    for(var i=0;i<b.length;i++){
+      if(a.indexOf(b[i])<0 ){
+        c.push(b[i]);
+      }
+    }
+    return c;
+  }
+  //删除不同元素
+  function arr_uniq(arr){
+    this.arr=arr;
+  }
+
+  arr_uniq.prototype.uniq=function(){
+    this.ori = [].concat(this.arr);
+    for (var i=0;i<this.arr.length;i++) {
+      for (var j=i+1;j<this.arr.length;j++ ) {
+        if (this.arr[i]==this.arr[j]){
+          this.arr.splice(j,1);
+        }
+      }
+    }
+    return this.arr;
+  }
+
+  function checkForm(){
+    delimg();
+    var frm=document.getElementsByName("form_n")[0];
+    frm.submit();
+  }
+
+  function delimg(){
+    var imgs= document.getElementsByName('delimg[]');
+    var imgsArr = [];
+    $(imgs).each(function(i,obj){
+      imgsArr.push(obj.value);
+    });
+    $.ajax({
+      type:"post",
+      url:"/prisoners/del_img",
+      data:{
+        'imgsArr':imgsArr
+      },
+      dataType:"json",
+      async:false,
+      success:function(data){
+
+      },
+      error:function(err){
+        console.log(err);
+      }
+    })
+  }
+  </script>
+<% end %>

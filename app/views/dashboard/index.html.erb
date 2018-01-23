@@ -1,0 +1,91 @@
+<% content_for :header do %>
+  <section class="content-header">
+    <%= session[:prison_title] %>
+    <div class="col-xs-12">
+      <ol class="breadcrumb" class="pull-left" style="font-size:medium;background-color:#edf6fa;font-size:12px;">
+      <li><a href="#"><i class="fa fa-dashboard"></i> 首页 </a></li>
+      </ol>
+    </div>
+  </section>
+<% end %>
+
+<% content_for :content do %>
+  <section id="test" class="content" style="margin-top:-25px;" ng-app="dashboard_app" ng-controller="indexCtrl">
+    <div class="row">
+      <%#<div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+        <div class="small-box bg-aqua">
+          <div class="inner">
+            <!--<h3>{{mail_data_len}}</h3>-->
+            <h3 ng-bind="mail_data_len"></h3>
+            <p>新邮件数</p>
+          </div>
+          <div class="icon">
+            <i class="glyphicon-envelope"></i>
+          </div>
+          <a class="small-box-footer mail_details" href="#">更多 <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+
+      </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-green">
+            <div class="inner">
+              <!--<h3>{{applies_data_len}} <sup style="font-size: 20px">%</sup> </h3>-->
+              <h3 ng-bind="applies_data_len"></h3>
+              <!--<p>今日申请</p>-->
+              <p>未审核申请</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-hand-stop-o"></i>
+            </div>
+            <a class="small-box-footer today_apply_details" href="#">更多 <i class="fa fa-arrow-circle-right"></i>
+            </a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-yellow">
+            <div class="inner">
+              <!--<h3>{{registors_data_len}}</h3>-->
+              <h3 ng-bind="registors_data_len"></h3>
+              <!--<p>今日注册</p>-->
+              <p>未审核注册</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-person-add"></i>
+            </div>
+            <a class="small-box-footer today_registor_details" href="#">更多 <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-xs-6">
+          <div class="small-box bg-red">
+            <div class="inner">
+              <h3>数据</h3>
+              <h4>统计</h4>
+            </div>
+            <div class="icon">
+              <i class="ion ion-pie-graph"></i>
+            </div>
+            <a class="small-box-footer" href="#">更多 <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>%>
+        <div class="dashboard col-xs-12">
+          <h2 class="col-xs-12 text-center">欢迎来到狱务公开管理平台</h2>
+        </div>
+
+    </div>
+
+    <div class="row" >
+      <div class="col-md-12">
+        <div class="box detailsboard" style="opacity:0;">
+
+        </div>
+      </div>
+    </div>
+
+  </section>
+<% end %>

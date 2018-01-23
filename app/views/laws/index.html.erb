@@ -1,0 +1,52 @@
+<% content_for :header do %>
+  <section class="content-header">
+    <%= session[:prison_title] %>
+    <div class="row">
+      <div class="col-xs-12">
+        <ol class="breadcrumb" style="font-size:medium;">
+          <li><a href="/dashboard"><i class="fa fa-dashboard"></i> 首页 </a></li>
+          <li class="active">法律法规信息管理</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+<% end %>
+
+<% content_for :content do %>
+  <section class="content"  style="margin-top:-25px;">
+    <div class="row">
+      <div class="col-md-4 list_height">
+          <a href="/laws/new" class="btn btn-primary btn-block margin-bottom">添加法律法规信息</a>
+          <div class="box box-solid" style="width:100%">
+            <div class="box-header with-border">
+              <h3 class="box-title">法律法规列表</h3>
+            </div>
+            <div style="display:block;overflow:auto;" class="box-body no-padding title-list">
+              <ul class="nav nav-pills nav-stacked">
+                <% @laws.each do |law| %>
+                <li onclick='laws_index_action()'><p class="id" style="display:none"><%= law.id %></p><a href="javascript:void(0)"><span><i class="fa fa-envelope-o" style="margin-right:10px;"></i></span><span><%= law.title %></span><span ></span></a></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-8">
+          <div class="box box-primary" style="width:100%">
+            <div class="box-header with-border">
+              <h3 class="box-title" style="padding:10px 10px 10px 10px;"><p>法律内容</p></h3>
+            </div>
+            <div class="box-body no-padding law_contents" style="overflow:auto;">
+              <div class="table-responsive mailbox-messages">
+                <div class="img" style="text-align:center;"></div>
+                <p style="margin:10px 40px 0 35px;"></p>
+              </div>
+            </div>
+            <div class="box-footer no-padding jails_edit">
+            </div>
+          </div>
+        </div>
+    </div>
+
+  </section>
+  <script type="text/javascript" src='js/law.js'></script>
+<% end %>

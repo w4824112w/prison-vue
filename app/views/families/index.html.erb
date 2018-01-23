@@ -1,0 +1,99 @@
+<% content_for :header do %>
+  <section class="content-header">
+    <%= session[:prison_title] %>
+    <div class="row">
+      <div class="col-xs-12">
+        <ol class="breadcrumb" class="pull-left" style="font-size:medium;background-color:#edf6fa;font-size:12px;">
+          <li><a href="/dashboard"><i class="fa fa-dashboard"></i> 首页 </a></li>
+          <li class="active">家属信息管理</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+<% end %>
+
+<% content_for :content do %>
+  <section class="content"  style="margin-top:-25px;" ng-app="families_app" ng-controller="familiesCtrl">
+    <div class="row">
+      <div class="col-md-12">
+      　　<div class="box">
+            <!--页数下拉列表-->
+            <div style='margin:20px 0 0 1%' class='pull-left'>
+              <select style="width:150px;" class="form-control input-xsmall pull-left" ng-change='limitChange()' ng-model='limit'>
+                <option value="1">1</option>
+                <option value="10" ng-selected="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+                <option value="50">50</option>
+              </select>
+              <p class='pull-right' style='padding:5px 0 0 5px'>条记录</p>
+            </div>
+            <!--搜索框-->
+            <div class="pull-right col-xs-4" style="margin-top:20px;margin-bottom:20px">
+              <input id="searchingContent" type="text" placeholder="请输入姓名、身份证号" class="pull-left"
+                     style="width:80%;font-size:13.5px;" ng-model="searchingContent"/>
+              <button id="searchingBtn" class="btn btn-default btn-sm" ng-click="search()" ng-disabled="isAbleSearching">搜索</button>
+            </div>
+
+            <div class="box-body">
+              <table id="tTrolley" class="table table-striped table-hover table-bordered">
+                <thead>
+                  <th>姓名</th>
+                  <th>身份证</th>
+                  <th>电话</th>
+                  <th>关系</th>
+                  <th>对应囚犯</th>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="f in families track by $index" class="{{$index%2==0?'even':'odd'}}">
+                    <td><p style='line-height:50px;text-align:left' ng-bind="f.name"></p></td>
+                    <td><p style='line-height:50px;text-align:left' ng-bind="f.uuid"></p></td>
+                    <td><p style='line-height:50px;text-align:left' ng-bind="f.phone"></p></td>
+                    <td><p style='line-height:50px;text-align:left' ng-bind="f.relationship"></p></td>
+                    <td>
+                      <p style='line-height:50px;text-align:left'>
+                        <a ng-click="prisonerDetail(f.prisoner)" ng-bind="f.prisoner.name"></a>
+                      </p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- Bootstrap 分页 -->
+              <div class='container'>
+                <div class="col-xs-10" align='right'>
+                   <p class='pull-left' style='margin-top:28px'>总共{{totalPages}}页,总共{{total}}条记录</p>
+                   <ul id="paginator" class="pagination">
+                   </ul>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal modal-primary fade in" id="prisoner_detail">
+      <div class="modal-dialog">
+        <div class="box box-primary box-solid" style="margin-top:100px;">
+          <div class="box-header with-border">
+            <h3 class="box-title">囚犯信息</h3>
+            <button aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span></button>
+          </div>
+          <div class="box-body">
+            <div style="float:left;height:100px;width:200px;">
+              <p style="line-height:30px;">姓名：<span class="name" ng-bind="prisoners.name"></span></p>
+              <p style="line-height:30px;">囚号：<span class="prisoner_number" ng-bind="prisoners.prisoner_number"></span></p>
+              <p style="line-height:30px;">性别：<span class="gender">{{prisoners.gender | gender}}</span></p>
+
+            </div>
+            <div style="float:left;width:200px;height:100px;margin-left:100px;">
+              <p style="line-height:30px;">罪名：<span class="crime" ng-bind="prisoners.crimes"></span></p>
+              <p style="line-height:30px;">监区：<span class="prison_area" ng-bind="prisoners.prison_area"></span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+<% end %>

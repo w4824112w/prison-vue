@@ -1,0 +1,68 @@
+/*jails*/
+.content-wrap ul,ol ,h3{
+    list-style: none;
+    margin:0;
+    padding:0;
+}
+    
+.content-wrap >div {
+    width:95%;
+    margin-left:2.5%;
+}
+
+.content-wrap .top-bar {
+    background:#fff;
+    height:35px;
+}
+
+.content-wrap .content-bar {
+    margin-top:15px;
+    padding:0;
+    background:#fff;
+}
+
+.content-wrap .content-bar >div {
+    width:50%;
+}
+
+.content-wrap .content-bar >div img {
+    margin-left:2%;
+    margin-top:20px;
+    margin-bottom:30px;
+}
+
+.content-wrap .content-bar .right-content ul {
+    margin-top:15px;
+    width:100%;
+    padding-right:4%;
+}
+
+.content-wrap .content-bar .right-content ul li {
+    width:100%;
+    float:left;
+    padding-top:10px;
+    padding-bottom:8px;
+    /*height:40px;*/
+}
+
+.content-wrap .content-bar .right-content ul li {
+    border-bottom:1px solid #F3F3F3;
+}
+
+
+.content-wrap .content-bar .right-content ul li:first-child {
+    border:0;
+}
+
+.content-wrap .content-bar .right-content ul li:last-child {
+    border:0;
+}
+
+.content-wrap .content-bar .right-content ul li p:nth-child(2) {
+    color:#A6A6A6;
+}
+
+/*news*/
+.odd tr td:nth-child(2) {
+    max-width:40% !important;
+}

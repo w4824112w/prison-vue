@@ -1,0 +1,48 @@
+<% content_for :header do %>
+    <section class="content-header">
+
+      <h1>短信验证码</h1>
+    </section>
+<% end %>
+
+<% content_for :content do %>
+    <section class="content">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="box box-info">
+            <div class="box-header">
+              <div class="box-tools">
+                <div class="input-group" style="width:150px;"></div>
+              </div>
+            </div>
+            <div class="box-body">
+              <div class="col-md-12">
+                <table class="table-bordered table dataTable" id="sms-table">
+                  <thead>
+                  <tr>
+                    <th>日期</th>
+                    <th>手机号</th>
+                    <th>验证码</th>
+                    <th>状态码</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <% @sms.each do |s| %>
+                      <tr>
+                        <td><%= s.created_at %></td>
+                        <td><%= s.phone %></td>
+                        <td><%= s.msg %></td>
+                        <td><%= s.code %></td>
+                      </tr>
+                  <% end %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </section>
+<% end %>

@@ -1,0 +1,60 @@
+
+<% content_for :header do %>
+    <section class="content-header">
+	  <h1><%= session[:prison_title] %></h1>
+      <div class="row">
+	      <div class="col-xs-12">
+	        <ol class="breadcrumb" style="font-size:medium;">
+	          <li><a href="/dashboard"><i class="fa fa-dashboard"></i> 首页 </a></li>
+	          <li class="active">订单管理</li>
+	          <li class="active">订单详情</li>
+	        </ol>
+	      </div>
+	    </div>
+    </section>
+<% end %>
+
+<% content_for :content do %>
+	<p class="id" style="display:none"><%= @order.id%></p>
+    <section class="content">
+      <div class="row">
+        <!-- /.col (left) -->
+        <div class="col-md-12">
+	          <div class="box">
+	            <div class="box-header with-border">
+	              <h3 class="box-title pull-left">订单号: <span class='order_trade_no'><%= @order.trade_no %>  <%= @prisoner.name %> <%= @prisoner.prison_area %></span></h3>
+	              <span class="pull-right mailbox-read-time order-date"><%= @order.gmt_payment %></span>
+	            </div>
+	            <!-- /.box-header -->
+	            <div class="box-body">
+	              <table class="table table-bordered">
+	                <tbody>
+		                <tr>
+		                  <th>商品名称</th>
+		                  <th>商品单价</th>
+		                  <th style="width:100px">商品数量</th>
+		                </tr>
+		                <% @order.line_items.each do |line_item| %>
+										  <tr>
+												<td><%= line_item.item.title %></td>
+												<td><%= line_item.item.price %></td>
+												<td><%= line_item.quantity %></td>
+											</tr>
+										<% end %>
+	              	</tbody>
+	              </table>
+
+	            </div>
+	            <!-- /.box-body -->
+	            <div class="box-footer clearfix">
+	              	<h3 class="box-title pull-right">总计: ￥<span class="num"><%= @order.amount %></span></h3>
+	            </div>
+	          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col (right) -->
+      </div>
+
+    </section>
+
+<% end %>

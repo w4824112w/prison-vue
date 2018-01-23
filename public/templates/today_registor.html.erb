@@ -1,0 +1,35 @@
+<div class="box">
+	<div class="box-header">
+	  <h3 class="box-title">今日注册申请</h3>
+
+	  <div class="box-tools">
+	    <div style="width: 150px;" class="input-group input-group-sm">
+	      <input type="text" placeholder="Search" class="form-control pull-right" name="table_search">
+
+	      <div class="input-group-btn">
+	        <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<div class="box-body table-responsive no-padding">
+	  <table class="table table-hover">
+	    <tbody><tr>
+	      <th>姓名</th>
+	      <th>电话</th>
+	      <th>身份证</th>
+	      <th>囚号</th>
+	      <th>关系</th>
+	      <th>预约时间</th>
+	    </tr>
+	    <tr ng-repeat="register in registers" style="font-weight:bold;">
+	      <td>{{register.name}}</td>
+	      <td>{{register.phone}}</td>
+	      <td>{{register.uuid}}</td>
+	      <td>{{register.prisoner_number}}</td>
+	      <td>{{register.relationship}}</td>
+	      <td>{{register.app_date}}</td>
+	    </tr>
+	  </tbody></table>
+	</div>
+</div>

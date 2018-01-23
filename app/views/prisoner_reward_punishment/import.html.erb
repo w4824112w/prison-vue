@@ -1,0 +1,218 @@
+
+<% content_for :header do %>
+  <section class="content-header">
+    <%= session[:prison_title] %>
+    <div class="row">
+    <div class="col-xs-12">
+      <ol class="breadcrumb" class="pull-left" style="font-size:medium;background-color:#edf6fa;font-size:12px;">
+        <li><a href="/dashboard"><i class="fa fa-dashboard"></i> 首页 </a></li>
+        <li class="active">罪犯奖惩信息管理</li>
+      </ol>
+    </div>
+    </div>
+  </section>
+<% end %>
+
+<% content_for :header do %>
+  <section class="content">
+
+      <div id="criminalData" class="row">
+
+        <div class="criminalDataContent clearfix">
+
+          <div class="col-xs-12" style="margin-bottom:15px;">
+            <p class="pull-left">
+              <span class="pull-left">点击下载模板:</span>
+              <a class="pull-left" href="/upload/prisoner_reward_punishment_template.xls">罪犯奖惩信息导入模板</a>
+            </p>
+          </div>
+
+          <div class="col-xs-12">
+            <p>上传模板文件:</p>
+            <p>限制文件后缀为 <span class="textRed">.xls</p>
+          </div>
+
+          <div class="col-xs-12 selectButtonBox" style="margin-bottom:20px;">
+            <input class="pull-left" type="button" value="选择本地文件">
+            <%= file_field_tag :file, style:"opacity:0;",id:"selectBtn",accept:".xls"%>
+            <p class="pull-left">请选择文件</p>
+          </div>
+
+          <div class="col-xs-24 importButtonBox">
+            <!--<input class="pull-left" type="button" value="导入文件">-->
+            <%= submit_tag "导入文件",id:"subm" %>
+            <p class="textRed errMsg" style="margin-top:20px;"></p>
+          </div>
+
+          <!--数据导入情况信息提示-->
+          <!-- <div id="uploadRemind" class="col-xs-12 hidden">
+            <div class="" role="alert">
+              <p id="success_total">上传数据: <span class="textRed"></span></p>
+              <p id="add_total">新增数据: <span class="textRed"></span></p>
+              <p id="update_total">更新数据: <span class="textRed"></span></p>
+            </div>
+          </div> -->
+        
+        </div>
+
+      </div>
+
+      <!-- 模态框 -->
+
+      <!-- 文件上传成功模态框 -->
+      <div class="modal fade bs-example-modal-success" tabindex="10" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+          <div class="modal-content">
+            <div class="alert alert-info alert-dismissible" role="alert" style="margin:0;">
+
+              <div>
+                <strong style="margin-left:45%;color:#fff">成功!</strong>
+              </div>
+              <p style="color:#fff"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 数据处理成功模态框 -->
+      <div class="modal fade bs-example-modal-path-success" tabindex="10" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+          <div class="modal-content">
+            <div class="alert alert-info alert-dismissible" role="alert" style="margin:0;">
+
+              <div>
+                <strong style="margin-left:45%;color:#fff">成功!</strong>
+              </div>
+              <p style="color:#fff"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 文件上传/数据处理失败模态框 -->
+      <div class="modal fade bs-example-modal-failed" tabindex="10" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+          <div class="modal-content">
+            <div class="alert alert-failed alert-dismissible" role="alert" style="margin:0;background-color:rgb(249,205,173)">
+
+              <strong style="margin-left:45%;color:#fff">失败!</strong>
+              <p style="color:#fff"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 加载文件提示 -->
+      <div class="spinner">
+        <p class="remind pull-left">文件上传中</p>
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+      </div>
+
+      <script>
+
+        var file;//上传文件
+        var path;//上传文件路径
+
+        //选择文件按钮 选择文件执行的方法
+        $("#selectBtn").on("change", function (e) {
+          file = e.target.files[0];
+          var fileName;
+          if (file) {
+            fileName = file.name;
+            $('.selectButtonBox p').html('已选择'+'"'+fileName+'"');
+          }
+        });
+
+        //点击导入文件执行的方法
+        $("#subm").on("click", function () {
+          $('.spinner p').html('文件上传中');
+          $('#subm').attr('disabled',true);
+          $('.spinner').css({
+            'display':'block'
+          });
+          readUploadCvs(file);
+        });
+
+        //文件上传成功时弹出的模态框消失时执行的方法
+        $('.bs-example-modal-success').on('hidden.bs.modal',function () {
+          $('.spinner p').html('数据处理中');
+          $.ajax({
+            url:'/prisoner_reward_punishment/import',
+            type:'get',
+            data:{
+              filepath:path
+            },
+            success:function(res) {
+              $('.spinner').css({
+                'display':'none'
+              });
+              if(res.code == 200) {
+                var msg = res.msg;
+
+                $('.bs-example-modal-path-success').modal();
+                $('.alert-info p').html(msg);
+                setTimeout(function () {
+                  $('.bs-example-modal-path-success').modal('hide');
+                },3500);
+              } else if (res.code == 500) {
+                var msg = res.msg;
+                $('.bs-example-modal-failed').modal();
+                $('.alert-failed p').html(msg);
+                setTimeout(function () {
+                  $('.bs-example-modal-failed').modal('hide');
+                },3500);
+              }
+              $('#subm').attr('disabled',false);
+            },
+            error:function(res) {
+              //console.log(res);
+              $('#subm').attr('disabled',false);
+            }
+          })
+        });
+
+        //上传文件时执行的异步加载的方法
+        function readUploadCvs(file) {
+          var oMyForm = new FormData();
+          oMyForm.append("file", file);
+          var oReq = new XMLHttpRequest();
+          oReq.open("POST", '/prisoner_reward_punishment/upload');
+          oReq.send(oMyForm);
+          oReq.onload = function (oEvent) {
+            if (oReq.status == 200) {
+              var response = $.parseJSON(this.response);
+              //console.log(response);
+              if (response.code == 200) {//上传Excel成功
+                  var msg = response.msg;
+                  path = response.path;
+                  //$('.errMsg').html(msg);
+                  $('.bs-example-modal-success').modal();
+                  $('.alert-info p').html(msg);
+                  setTimeout(function () {
+                    $('.bs-example-modal-success').modal('hide');
+                  },3500);
+              } else if (response.code == 500) {
+                  $('.spinner').css({
+                    'display':'none'
+                  });
+                  var msg = response.msg;
+                  //$('.errMsg').html(msg);
+                  $('.bs-example-modal-failed').modal();
+                  $('.alert-failed p').html(msg);
+                  setTimeout(function(){
+                    $('.bs-example-modal-failed').modal('hide');
+                  },3500);
+              }
+              $('#subm').attr('disabled',false);
+            } else {
+              console.log("上传Cvs错误，错误码：" + oReq.status);
+            }
+          };
+        };
+
+      </script>
+
+  </section>
+<% end %>

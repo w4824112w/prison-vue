@@ -1,0 +1,92 @@
+<div class="row" style="height:22em;background-color:#4f98c2;margin-top:150px;box-shadow:5px 5px #4f98c2;">
+
+  <div class="login-box" style="margin-top:10px;margin-bottom:0px;">
+    <div class="login-logo" >
+      <a href="javascript:void(0)" style="color:white;">狱务公开管理平台</a>
+    </div><!-- /.login-logo -->
+    <div class="test">
+      <div class="login-box-body" style="background-color:#4f98c2;margin-top:-5px;padding-top:0px;">
+        <%= form_tag("/login", method: :post,:class => 'form-horizontal',:id => 'home-form') do -%>
+          <div class="form-group has-feedback">
+            <input type="text" class="form-control" placeholder="监狱代码" name="prison">
+            <span class="fa fa-university form-control-feedback"></span>
+          </div>
+          <div class="form-group has-feedback">
+            <input type="text" class="form-control" placeholder="用户名" name="username" id="username">
+            <span class="fa fa-user form-control-feedback"></span>
+          </div>
+          <div class="form-group has-feedback">
+            <input type="password" class="form-control" placeholder="密码" name="password" id="password">
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+          </div>
+
+          <div class="row">
+            <div class="col-xs-8">
+              <!--  <a href="#">忘记密码</a><br> -->
+              <% if alert %>
+                <p style="color:white;"><%= alert %></p>
+              <% end %>
+              <input id="remember-pwd" type="checkbox" name="" value="" checked>
+              <label for="remember-pwd">记住密码</label>
+            </div><!-- /.col -->
+            <div class="col-xs-4">
+              <button id="login" style="background-color:#186c9c;" type="button" class="btn btn-primary btn-block btn-flat" >登录</button>
+            </div><!-- /.col -->
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+<script src="/js/jquery-1.11.3.min.js"></script>
+
+<script type="text/javascript">
+  (function($){
+    //获取用户名
+    var username = $('#username').val();
+
+    //表单初始化时获取对应用户名的密码
+    if(localStorage[username]){
+      $('#password').html(localStorage[username]);
+    }
+
+    //在用户名框输入数据时，获取对应的用户密码
+    $('#username').on('keyup',function(){
+      // console.log($('#username').val());
+      // console.log(localStorage[$('#username').val()]);
+      if(localStorage[$('#username').val()] != undefined){
+        $('#password').val(localStorage[$('#username').val()]);
+      } else {
+        $('#password').val('');
+      }
+    })
+
+    // $('#remember-pwd').on('change',function(){
+    //   // console.log('checkbox-value',$('#remember-pwd').prop('checked'));
+    //   var username = $('#username').val();
+    //   var password = $('#password').val();
+    //   var ischeck = $('#remember-pwd').prop('checked');
+    //   if(ischeck){
+    //     localStorage.setItem(username,password);
+    //     // console.log(localStorage.getItem(username));
+    //   } else {
+    //     localStorage.setItem(username,'');
+    //   }
+    // })
+
+    //点击登录按钮时，执行的方法
+    $('#login').on('click',function(){
+      var ischeck = $('#remember-pwd').prop('checked');
+      var username = $('#username').val();
+      var password = $('#password').val();
+      if(ischeck && username){
+        localStorage.setItem(username,password);
+      } else if(!ischeck){
+        localStorage.setItem(username,'');
+      }
+      $('#home-form').submit();
+    })
+  })(jQuery)
+</script>

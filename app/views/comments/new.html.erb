@@ -1,0 +1,41 @@
+<% content_for :header do %>
+  <section class="content-header">
+    <h1><%= session[:prison_title] %>
+      <h1>监狱长信箱</h1>
+    </h1>
+    <ol class="breadcrumb">
+    <li><a href="/dashboard"><i class="fa fa-dashboard"></i> 首页 </a></li>
+    <li class="active">监狱长信箱</li>
+    </ol>
+  </section>
+<% end %>
+
+<% content_for :content do %>
+  <section class="content"  style="margin-top:-25px;">
+    <div class="row">
+        
+        <!-- /.col -->
+        <%= form_for([@mail_box, @mail_box.comments.build]) do |f| %>
+          <p>
+            <%= f.label :contents %><br>
+            <%= f.text_field :contents %>
+          </p>
+
+          <p>
+            <%= f.label :family_id %><br>
+            <%= f.text_field :family_id %>
+          </p>
+          <p>
+            <%= f.label :user_id %><br>
+            <%= f.text_field :user_id %>
+          </p>
+
+          <p>
+            <%= f.submit %>
+          </p>
+        <% end %>
+      </div>
+    
+  </section>
+  
+<% end %>

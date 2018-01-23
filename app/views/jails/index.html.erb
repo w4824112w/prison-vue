@@ -1,0 +1,59 @@
+<% content_for :header do %>
+  <section class="content-header">
+   <%= session[:prison_title] %>
+    <div class="row">
+      <div class="col-xs-12">
+        <ol class="breadcrumb" style="font-size:medium;">
+          <li><a href="/dashboard"><i class="fa fa-dashboard"></i> 首页 </a></li>
+          <li class="active">监狱基本信息管理</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+<% end %>
+
+<% content_for :content do %>
+  <section class="content content-wrap row">
+      <div class="">
+          <div class="col-xs-12 top-bar"></div>
+          <div class="col-xs-12 content-bar">
+              <div class="pull-left left-content text-muted">
+                  <%= image_tag @jail.image.url(:thumb) %>
+              </div>
+              <div class="pull-left right-content">
+                <ul class="pull-left">
+                    <li>
+                        <h3 class="text-center text-bold">
+                          <%= @jail.title %>
+                        </h3>
+                    </li>
+                    <li>
+                        <p class="pull-left">监狱所在省</p>
+                        <p class="pull-right"><%= @jail.state %></p>
+                    </li>
+                    <li>
+                        <p class="pull-left">监狱所在市</p>
+                        <p class="pull-right"> <%= @jail.city %></p>
+                    </li>
+                    <li>
+                        <p class="pull-left">监狱所在行政区</p>
+                        <p class="pull-right"><%= @jail.district %></p>
+                    </li>
+                    <li>
+                        <p class="pull-left">监狱所在街道</p>
+                        <p class="pull-right"><%= @jail.street %></p>
+                    </li>
+                    <li>
+                        <p class="">监狱简介</p>
+                        <p><%= raw @jail.description %></p>
+                        <div class="pull-right">
+                            <%= link_to '编辑', edit_jail_path(@jail) %>
+                        </div>
+                        <!--<a href="#" class="pull-right">编辑</a>-->
+                    </li>
+                </ul>
+              </div>
+          </div>
+      </div>
+  </section>
+<% end %>

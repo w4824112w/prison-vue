@@ -1,0 +1,36 @@
+<div class="show_header">
+ <div class="col-md-16">
+  <div class="box-header">
+   <p style="font-size:24px;"><%= @jail.title.html_safe%></p>
+   <div style="margin-top:-5px;margin-bottom:-10px;"><span style="font-size:12px" class="mailbox-read-time"><%= @jail.created_at%></span></div>
+  </div>
+   <div class="box-body">
+     <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+          <div class="item active">
+            <img src="<%= @jail.image.url()%>" alt="" style="width:100%;height:200px;">
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="contents" style="margin-top:-15px;">
+    <p style="font-size:17px;line-height:25px;"><%= @jail.description.html_safe%></p>
+    </div>
+   </div>
+ </div>
+</div>
+<footer class="main-footer" style="font-size:10px;background-color:#F0F0F0;text-align:center;">
+<!--    <strong style="line-height:10px;"><a style="font-size:10px;" href="http://almsaeedstudio.com">国科政信科技(北京)股份有限公司</a></strong> 技术支持 -->.
+</footer>
+<script>
+  $(document).ready(function(){
+    var window_width = $(window).width();
+    var width = $(".show_title").width();
+    var p_width = $(".show_title").find("p").width();
+    var width_gap = width - p_width;
+    $(".show_title").css({"padding-left":width_gap+"px"});
+  /*pic center*/
+    var pics_width = $(".show_pics").width();
+    $("img").css({"width":window_width-10+"px"});
+  })
+</script>

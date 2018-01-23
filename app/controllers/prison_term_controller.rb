@@ -1,0 +1,16 @@
+class PrisonTermController < ApplicationController
+
+  def import_index
+    render 'import'
+  end
+
+  def upload
+    @import_result=PrisonTerm.upload(params[:file])
+    render json: @import_result
+  end
+
+  def import
+    @import_result=PrisonTerm.import(params[:filepath],session[:jail_id])
+    render json: @import_result
+  end
+end

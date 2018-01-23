@@ -1,0 +1,74 @@
+<% content_for :header do %>
+  <section class="content-header">
+    <%= session[:prison_title] %>
+    <div class="row">
+    <div class="col-xs-12">
+      <ol class="breadcrumb" class="pull-left" style="font-size:medium;background-color:#edf6fa;font-size:12px;">
+        <li><a href="/dashboard"><i class="fa fa-dashboard"></i> 首页 </a></li>
+        <li class="active">监狱长信箱</li>
+      </ol>
+    </div>
+    </div>
+  </section>
+<% end %>
+<% content_for :content do %>
+  <section class="content"  style="margin-top:-25px;">
+    <div class="row">
+        <div class="col-md-12">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <a style="float:right;margin-left:20px" class="btn btn-box-tool btn-default btn-sm" href="/mail_boxes"><i class="fa fa-refresh">&nbsp;&nbsp;<span style="font-family: microsoft yahei,Helvetica,Arial,sans-serif;font-style:normal">刷新</span></i></a>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+              <div class="table-responsive mailbox-messages">
+                <table class="table table-hover table-striped">
+                  <thead>
+                  <tr>
+                    <th></th>
+                    <th>标题</th>
+                    <th>内容</th>
+                    <th>发件人</th>
+                    <th>发送日期</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                    <% @mail_boxes.each do |mail_box|%>
+                      <tr style="display:none">
+                        <td class="mailbox-star">
+                          <a href="#"><i class="fa fa-star text-yellow"></i></a>
+                        </td>
+                        <td class="mailbox-name">
+                          <p style="display:none"><%= mail_box.id %></p>
+                          <a href=""><%= mail_box.title %></a>
+                        </td>
+                        <td class="mailbox-subject">
+                          <%= mail_box.contents.truncate(25, omission: '... ...') %>
+                        </td>
+                        <td class="mailbox-subject">
+                          <%= mail_box.family.name %>
+                        </td>
+                        <td class="mailbox-date" style="color:#999"><%= mail_box.created_at %></td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+                <!-- /.table -->
+              </div>
+              <!-- /.mail-box-messages -->
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer" style="text-align:center">
+              <ul class="pagination pagination-sm page">
+
+              </ul>
+            </div>
+          </div>
+          <!-- /. box -->
+        </div>
+        <!-- /.col -->
+      </div>
+
+  </section>
+
+<% end %>

@@ -1,0 +1,83 @@
+<% content_for :header do %>
+  <section class="content-header">
+    <%= session[:prison_title] %>
+    <div class="col-xs-12">
+      <ol class="breadcrumb" class="pull-left" style="font-size:medium;background-color:#edf6fa;font-size:12px;">
+      <li><a href="/dashboard"><i class="fa fa-dashboard"></i> 首页 </a></li>
+      <li class=""><a href="/mail_boxes">监狱长信箱</a></li>
+      <li class="active">邮件详情</li>
+      </ol>
+    </div>
+  </section>
+<% end %>
+<% content_for :content do %>
+  <section class="content"  style="margin-top:-25px;">
+    <div class="row">
+        <!-- /.col -->
+        <div class="col-md-12">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <div class="box-tools pull-right">
+                <a href="#" class="btn btn-box-tool" data-toggle="tooltip" title="Previous"><i class="fa fa-chevron-left"></i></a>
+                <a href="#" class="btn btn-box-tool" data-toggle="tooltip" title="Next"><i class="fa fa-chevron-right"></i></a>
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+              <div class="mailbox-read-info">
+                <h3><%= @mail.title %></h3>
+                <p style="display:none" class="id"><%= @mail.id%></p>
+                <h5 style="margin:15px 15px 15px 15px; "><span style="color:#999;">来自:</span> <%= @mail.family.name %>
+                     &nbsp;&nbsp;&nbsp;&nbsp;<<%= @prisoner.name%> 的 <%= @family.relationship%>>
+                  </h5>
+                <h5 style="margin:15px 15px 15px 15px; "><span style="color:#999;">日期:</span> <span class="mailbox-read-time mailbox-date"><%= @mail.created_at %></span>
+              </div>
+              <!-- /.mailbox-read-info -->
+              <div class="mailbox-read-message">
+                <p style="margin-left:15px;">信件内容:&nbsp;&nbsp;&nbsp;&nbsp;<%= @mail.contents %></p>
+              </div>
+              <!-- /.mailbox-read-message -->
+            </div>
+            
+            <!-- /.box-footer -->
+            <div class="box-footer">
+                <% @mail.comments.each do |comment| %>
+                <div class="col-md-12">
+                  <div class="post">
+                    <div>
+                      <span class="username">
+                        <a href="#">监狱回复:</a>
+                      </span>
+                      <span class="description"><%= comment.created_at %></span>
+                    </div>
+                    <p style="margin:15px 0 15px 15px;">
+                      <%= comment.contents %>
+                    </p>
+                  </div>
+                </div>
+                <% end %>
+               <%= form_for([@mail, @mail.comments.build]) do |f| %>
+                <div class="col-md-12">
+                  <%= f.text_area :contents,:class =>"form-control contents" ,:placeholder =>"快捷回复" %>
+                </div> 
+                <br>
+                <%= f.hidden_field :family_id, :value => @mail.family_id %>
+                <%= f.hidden_field :user_id, :value => session[:user_id] %>
+                <div class="col-md-12">
+                  <div class="pull-right" style="margin-top:10px;">
+                    <%= f.submit "回复", :class =>'btn btn-sm btn-default update'%>
+                  </div>
+                </div>
+                
+              <% end %>
+            </div>
+            <!-- /.box-footer -->
+          </div>
+          <!-- /. box -->
+        </div>
+        <!-- /.col -->
+      </div>
+    
+  </section>
+  
+<% end %>
