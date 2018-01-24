@@ -2,6 +2,9 @@ require 'sidekiq/web'
 
 Rails.application.routes.draw do
   
+  resources :users, only: :index
+  resources :authentication, only: :create
+
   mount Sidekiq::Web => '/sidekiq'
 
   root :to => 'home#index', as: 'home'

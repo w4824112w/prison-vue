@@ -54,5 +54,6 @@ gem 'spreadsheet'
 gem 'rack-cors', :require => 'rack/cors' 
 gem 'mailfactory' 
 gem 'mail' 
-gem "sidekiq-cron"
+gem 'sidekiq-cron'
+gem 'jwt'
 #gem 'rails_kindeditor'

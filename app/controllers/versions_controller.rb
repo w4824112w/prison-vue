@@ -20,8 +20,9 @@ class VersionsController < ApplicationController
   end
 
   def update
+    puts '88888888888888888888888888888888'
     @version = Version.find(params[:id])
-    
+    puts '99999999999999999999999999999999'
     if @version.update_attributes(versions_params)
       return render json: { code: 200, msg: "数据更新成功！" }
     else

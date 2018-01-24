@@ -1,10 +1,22 @@
 class User < ApplicationRecord
+  has_secure_password
   belongs_to :jail
 
   attr_accessor :password
 
   validate  :password_must_be_present
   validates :password, :confirmation => true
+
+  def token
+    {
+      token: Token.encode(user_id: self.id)
+    }
+  end
+
+  def to_json
+    puts self.inspect
+    self.slice(:id, :username, :role, :jail_id.to_s, :created_at.to_s)
+  end
 
   def User.encrypt_password(password, salt)
 	  BCrypt::Engine.hash_secret(password, salt)
