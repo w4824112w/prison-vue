@@ -1,10 +1,13 @@
 require 'digest'
 require 'net/http'
 
-module YunXin
+class YunXin
   APP_KEY = '87dae6933488de4bab789054a3a5c720'
   APP_SECRET = '0022cf3d53fa'
-  
+
+  def initialize
+  end  
+
   # 获取验证码
   def get_code(mobile, &block)
     uri = URI('https://api.netease.im/sms/sendcode.action')
@@ -22,14 +25,14 @@ module YunXin
     post(uri, { mobile: mobile, code: code })
   end
 
-  def generate_accid(accid, name, avatar)
+  def generate_accid(accid, name, avatar = nil)
     uri = URI('https://api.netease.im/nimserver/user/create.action')
     post(uri, { accid: accid, name: name, token: accid, icon: avatar })
   end
 
-  def send_message(from, to, body, type = 0)
-    uri = URI('https://api.netease.im/nimserver/msg/sendAttachMsg.action')
-    post(uri, { from: from, to: to, attach: body.to_json, msgtype: type })
+  def send_message(from, to, body, ope = 0, type = 0)
+    uri = URI('https://api.netease.im/nimserver/msg/sendMsg.action')
+    post(uri, { from: from, to: to, body: body, ope: ope, type: type })
   end
 
   def send_sms(templateid, mobiles, params)
@@ -67,3 +70,8 @@ module YunXin
   end
   
 end
+
+yunxin = YunXin.new
+
+
+puts yunxin.generate_accid('611702', '陕西省安康监狱')

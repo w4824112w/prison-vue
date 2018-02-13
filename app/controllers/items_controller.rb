@@ -1,14 +1,16 @@
 class ItemsController < ApplicationController
   #before_filter :test
+  before_action :authenticate!
 
   def index
-    @items = Item.where(jail_id: session[:jail_id],sys_flag: 1)
+    @items = Item.where(jail_id: params[:jail_id],sys_flag: 1)
     @items.each { |i| i.avatar_url = i.avatar.url(:thumb) }
 
-    respond_to do |format|
-      format.html
-      format.json { render json: @items }
-    end
+    render json: @items
+  #  respond_to do |format|
+  #    format.html
+  #    format.json { render json: @items }
+  #  end
   end
 
   def new
@@ -18,22 +20,30 @@ class ItemsController < ApplicationController
   def create
     @item = Item.create(item_params)
     if @item.save
-      redirect_to items_path
+     # redirect_to items_path
+     return render json: { code: 200, msg: "数据新增成功！" }
     else
-      render 'new'
+    #  render 'new'
+      return render json: { code: 500, msg: "请核对数据是否正确！" }
     end
   end
 
   def edit
     @item = Item.find(params[:id])
+    render json: @item
   end
 
   def update
+    puts '11111111111111111111111111111'
+   # puts params[:avatar].inspect
+   puts params[:id]
     @item = Item.find(params[:id])
     if @item.update_attributes(item_params)
-      redirect_to items_path
+      return render json: { code: 200, msg: "数据更新成功！" }
+    #  redirect_to items_path
     else
-      render 'edit'
+      return render json: { code: 500, msg: "请核对数据是否正确！" }
+    #  render 'edit'
     end
   end
 
@@ -41,13 +51,14 @@ class ItemsController < ApplicationController
     @item = Item.find(params[:id])
     # @item.destroy
     @item.update_attributes(:sys_flag => 0)
-    redirect_to items_path
+  #  redirect_to items_path
+    return render json: { code: 200, msg: "数据删除成功！" }
   end
 
   private
 
   def item_params
-    params.require(:item).permit(:title, 
+    params.permit(:id, :title, 
                                  :description, 
                                  :price, 
                                  :avatar, 

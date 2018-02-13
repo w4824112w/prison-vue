@@ -1,10 +1,12 @@
 # encoding = utf-8
 class SearchController < ApplicationController
+  before_action :authenticate!
+
   def search
     params[:limit] ||= 10
     params[:page] ||= 0
 
-    conditions = { jail_id: session[:jail_id], limit: params[:limit].to_i, offset: params[:page].to_i * params[:limit].to_i }
+    conditions = { jail_id: params[:jail_id], limit: params[:limit].to_i, offset: params[:page].to_i * params[:limit].to_i }
     
     # 身份证
     if /\d{15}(\d\d[0-9xX])?/.match(params[:value]) 

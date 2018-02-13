@@ -30,7 +30,8 @@ class ApplicationController < ActionController::API
       if request.method == :options
        #headers['Access-Control-Allow-Origin'] = 'http://localhost:8080'
      #   puts '2222'+request.headers["Origin"]
-        headers['Access-Control-Allow-Origin'] = 'http://127.0.0.1:8080'
+       # headers['Access-Control-Allow-Origin'] = 'http://127.0.0.1:8080'
+        headers['Access-Control-Allow-Origin'] = request.headers["Origin"]
         headers['Access-Control-Allow-Methods'] = 'POST, PUT, DELETE, GET, PATCH, OPTIONS, HEAD'
         headers['Access-Control-Request-Method'] = '*'
         headers['Access-Control-Allow-Credentials'] = 'true'

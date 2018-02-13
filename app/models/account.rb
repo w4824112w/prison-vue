@@ -18,6 +18,7 @@ class Account < ApplicationRecord
     a.id as account_id, a.balance FROM prisoners p LEFT OUTER JOIN 
     accounts a ON a.prisoner_id = p.id WHERE p.jail_id = #{jail} AND #{opt[:query]};"
 
+    puts 'sql--'+sql
     res = find_by_sql(sql)
     { total: res.size, data: res }
   end

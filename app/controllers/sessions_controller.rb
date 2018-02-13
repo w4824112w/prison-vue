@@ -1,7 +1,8 @@
 # encoding = utf-8
 
 class SessionsController < ApplicationController
-  skip_before_action :authorize
+#  skip_before_action :authorize
+before_action :authenticate!
 
   def create
     @user = User.authenticate(params[:prison], params[:username], params[:password])

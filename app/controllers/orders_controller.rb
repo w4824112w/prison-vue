@@ -1,17 +1,18 @@
 #encoding = utf-8
 
 class OrdersController < ApplicationController
+  before_action :authenticate!
   
   def index
     page = params[:page] ? params[:page].to_i : 0;
     limit = params[:limit] ? params[:limit].to_i : 10;
 
-    @items_orders = Order.success_orders(session[:jail_id], limit, limit * page)
-
-    respond_to do |format|
-      format.html
-      format.json { render json: { orders: @items_orders } }
-    end
+    @items_orders = Order.success_orders(params[:jail_id], limit, limit * page)
+    render json: { orders: @items_orders }
+  #  respond_to do |format|
+  #    format.html
+  #    format.json { render json: { orders: @items_orders } }
+  #  end
   end
 
   def show

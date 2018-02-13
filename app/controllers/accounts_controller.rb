@@ -1,15 +1,16 @@
 class AccountsController < ApplicationController
-  layout 'auditor'
+#  layout 'auditor'
+before_action :authenticate!
 
   def index
     params[:limit] ||= 10
     params[:page] ||= 0
-
-    respond_to do |format|
-      format.html
-      format.json { 
-        render json: Account.list(session[:jail_id], params[:limit].to_i, params[:limit].to_i * params[:page].to_i) }
-    end
+    render json: Account.list(params[:jail_id], params[:limit].to_i, params[:limit].to_i * params[:page].to_i)
+  #  respond_to do |format|
+  #    format.html
+  #    format.json { 
+  #      render json: Account.list(session[:jail_id], params[:limit].to_i, params[:limit].to_i * params[:page].to_i) }
+  #  end
   end
 
   def show

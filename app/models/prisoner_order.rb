@@ -49,7 +49,7 @@ class PrisonerOrder < ApplicationRecord
                 order_details_parse=row[8]
                 payment_type_parse=row[11]
 
-            #   puts "status_parse--"+status_parse+"--ifreceive_parse--"+ifreceive_parse+"--goods_details_parse--"+goods_details_parse+"--goods_name_parse--"+goods_name_parse+"--order_details_parse--"+order_details_parse+"--payment_type_parse--"+payment_type_parse
+               puts "status_parse--"+status_parse+"--ifreceive_parse--"+ifreceive_parse+"--goods_details_parse--"+goods_details_parse+"--goods_name_parse--"+goods_name_parse+"--order_details_parse--"+order_details_parse+"--payment_type_parse--"+payment_type_parse
             #   puts "参数中文转码end..."
 
                 prisoner_number=row[5]
@@ -95,20 +95,22 @@ class PrisonerOrder < ApplicationRecord
                 order_details_parse=row[8].to_s.encode(Encoding.find("UTF-8"),Encoding.find("gbk"))
                 payment_type_parse=row[11].to_s.encode(Encoding.find("UTF-8"),Encoding.find("gbk"))
 
-            #   puts "status_parse--"+status_parse+"--ifreceive_parse--"+ifreceive_parse+"--goods_details_parse--"+goods_details_parse+"--goods_name_parse--"+goods_name_parse+"--order_details_parse--"+order_details_parse+"--payment_type_parse--"+payment_type_parse
+               puts "status_parse--"+status_parse+"--ifreceive_parse--"+ifreceive_parse+"--goods_details_parse--"+goods_details_parse+"--goods_name_parse--"+goods_name_parse+"--order_details_parse--"+order_details_parse+"--payment_type_parse--"+payment_type_parse
             #   puts "参数中文转码end..."
 
                 prisoner_number=row[5]
                 prisoner=Prisoner.find_by_prisoner_number_and_jail_id(prisoner_number, jail_id)
 
-                prisoner.families.each do |f|
-                    transaction do
-                        prisoner_order=PrisonerOrder.create!({trade_no: row[3],jail_id: jail_id, payment_type: payment_type_parse, status: status_parse, ifreceive: ifreceive_parse ,created_at: row[2],updated_at: row[10],amount: row[12],family_id: f.id,order_details: order_details_parse,total: row[6]})
-                        prisoner_order_detail  = PrisonerOrderDetail.new(prisoner_orders_id: prisoner_order.id,prisoner_id: f.prisoner_id,goods_name: goods_name_parse,goods_price: row[13],goods_details: goods_details_parse,goods_num: row[15] )
-                        prisoner_order_detail.save!
+                if prisoner
+                    prisoner.families.each do |f|
+                        transaction do
+                            prisoner_order=PrisonerOrder.create!({trade_no: row[3],jail_id: jail_id, payment_type: payment_type_parse, status: status_parse, ifreceive: ifreceive_parse ,created_at: row[2],updated_at: row[10],amount: row[12],family_id: f.id,order_details: order_details_parse,total: row[6]})
+                            prisoner_order_detail  = PrisonerOrderDetail.new(prisoner_orders_id: prisoner_order.id,prisoner_id: f.prisoner_id,goods_name: goods_name_parse,goods_price: row[13],goods_details: goods_details_parse,goods_num: row[15] )
+                            prisoner_order_detail.save!
+                        end
                     end
                 end
-
+                puts 'ending........'
             end
     
         rescue =>error

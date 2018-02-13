@@ -1,4 +1,5 @@
 class PrisonTermController < ApplicationController
+  before_action :authenticate!
 
   def import_index
     render 'import'
@@ -10,7 +11,7 @@ class PrisonTermController < ApplicationController
   end
 
   def import
-    @import_result=PrisonTerm.import(params[:filepath],session[:jail_id])
+    @import_result=PrisonTerm.import(params[:filepath],params[:jail_id])
     render json: @import_result
   end
 end

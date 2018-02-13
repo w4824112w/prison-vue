@@ -7,19 +7,19 @@ Rails.application.routes.draw do
 
   mount Sidekiq::Web => '/sidekiq'
 
-  root :to => 'home#index', as: 'home'
+#  root :to => 'home#index', as: 'home'
 
-  controller :sessions do
-    post 'login' => :create
-    delete 'logout' => :destroy
-  end
+#  controller :sessions do
+#    post 'login' => :create
+#    delete 'logout' => :destroy
+#  end
 
   get 'search' => 'search#search'
   #
   #修改用户密码
   #
-  get 'modify_index' => 'super_user#modify_index'
-  post 'modify' => 'super_user#modify'
+  get 'super_user/modify_index' => 'super_user#modify_index'
+  post 'super_user/modify' => 'super_user#modify'
 
   #
   # 审核管理员
@@ -91,6 +91,10 @@ Rails.application.routes.draw do
   get '/versions/:id/edit' => 'versions#edit'
   post '/versions/update' => 'versions#update'
   
+  #附件上传
+  post '/jails/update' => 'jails#update'
+  post '/laws/update' => 'laws#update'
+  post '/news/update' => 'news#update'
 
 
   resources :items, :news, :laws, :jails, :accounts, :prisoners, :families, :orders, :super_user, :terminals, :versions
@@ -100,6 +104,8 @@ Rails.application.routes.draw do
   # 订单管理员
   #
   get '/items/:id/delete' => 'items#destroy'
+
+  post '/items/update' => 'items#update'
 
   get '/sms' => 'short_messages#index'
 

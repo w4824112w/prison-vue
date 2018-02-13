@@ -1,5 +1,6 @@
 class LoggersController < ApplicationController
-  skip_before_action :authorize
+#  skip_before_action :authorize
+before_action :authenticate!
 
   layout 'logs'
 

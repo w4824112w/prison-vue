@@ -1,17 +1,23 @@
 class VersionsController < ApplicationController
+  before_action :authenticate!
 
   def index
     @versions_table_content = Version.list(params[:length], params[:start])
 
-    respond_to do |format|
-      format.html
-      format.json { render json: { draw: params[:draw],
-                                   recordsFiltered: @versions_table_content[:total],
-                                   recordsTotal: @versions_table_content[:total],
-                                   data: {  prisoner_data: @versions_table_content[:versions] }
-                                   } 
-                  }
-    end
+    render json: { draw: params[:draw],
+                                     recordsFiltered: @versions_table_content[:total],
+                                     recordsTotal: @versions_table_content[:total],
+                                     data: {  prisoner_data: @versions_table_content[:versions] }
+                                     } 
+  #  respond_to do |format|
+  #    format.html
+  #    format.json { render json: { draw: params[:draw],
+  #                                 recordsFiltered: @versions_table_content[:total],
+  #                                 recordsTotal: @versions_table_content[:total],
+  #                                 data: {  prisoner_data: @versions_table_content[:versions] }
+  #                                 } 
+  #                }
+  #  end
   end
 
   def edit
@@ -20,9 +26,7 @@ class VersionsController < ApplicationController
   end
 
   def update
-    puts '88888888888888888888888888888888'
     @version = Version.find(params[:id])
-    puts '99999999999999999999999999999999'
     if @version.update_attributes(versions_params)
       return render json: { code: 200, msg: "数据更新成功！" }
     else

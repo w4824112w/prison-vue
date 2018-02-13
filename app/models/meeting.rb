@@ -115,7 +115,7 @@ class Meeting < ApplicationRecord
     end
       
     sql = "#{selections} #{tables} #{where_clause} ORDER BY created_at desc"
-
+    puts 'sql----'+sql
     if conditions[:limit] 
       total = count_by_sql("SELECT COUNT(*) #{tables} #{where_clause};")
       limit = conditions[:limit]
@@ -125,7 +125,7 @@ class Meeting < ApplicationRecord
       logger.debug sql
       return { total: total, meetings: find_by_sql(sql) }
     end
-      
+ 
     logger.debug sql
     find_by_sql(sql)
   end

@@ -41,6 +41,7 @@ class Registration < ApplicationRecord
   end
 
   def authorization(status, remarks)
+    puts 'status--'+status+'---remarks--'+remarks
     if status == 'DENIED'
       return reject_registration(remarks)
     end
@@ -110,7 +111,8 @@ class Registration < ApplicationRecord
   def create_accid(accid, image)
     domain = 'https://www.fushuile.com'
     avatar = image.nil? ? "#{domain}/images/default/missing.jpeg" : "#{domain}#{image}" 
-    GenerateAccidWorker.perform_async(accid, self.name, avatar)
+    puts 'accid--'+accid+'--name--'+self.name+'--avatar--'+avatar
+       GenerateAccidWorker.perform_async(accid, self.name, avatar)
     { code: 200, msg: 'create success' }   
   end
 end

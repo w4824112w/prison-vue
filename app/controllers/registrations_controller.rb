@@ -1,7 +1,8 @@
 #encoding = utf-8
 
 class RegistrationsController < ApplicationController
- 
+  before_action :authenticate!
+
   def index  
     conditions = { jail_id: session[:jail_id], limit: params[:limit], offset: params[:page].to_i * params[:limit].to_i }
 
@@ -9,10 +10,11 @@ class RegistrationsController < ApplicationController
 
     @registrations = Registration.list(conditions)
 
-    respond_to do |format|
-      format.html
-      format.json { render json: @registrations }
-    end
+  #  respond_to do |format|
+  #    format.html
+  #    format.json { render json: @registrations }
+  #  end
+    render json: @registrations
   end
 
   def images
@@ -28,6 +30,7 @@ class RegistrationsController < ApplicationController
 
   def audit
     registration = Registration.find_by_id(params[:id])
+
     unless registration
       logger.info "registration #{params[:id]} not found"
       render json: { code: 404, msg: 'registration not found' }

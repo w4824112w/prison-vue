@@ -45,6 +45,7 @@ secret
 spec
 spec:controllers
 spec:integration
+spec:mailers
 spec:models
 spec:routing
 spec:workers

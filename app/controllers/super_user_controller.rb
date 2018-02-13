@@ -1,12 +1,14 @@
 class SuperUserController < ApplicationController
+  before_action :authenticate!
 
   def index
 	  @users = User.all
-	
-	  respond_to do |format|
-      format.html
-      format.json { render json: @users}
-    end
+  
+    render json: @users
+	#  respond_to do |format|
+  #    format.html
+  #    format.json { render json: @users}
+  #  end
   end
 
   def modify_index
@@ -14,7 +16,7 @@ class SuperUserController < ApplicationController
   end  
   
   def modify
-    @modify_result = User.modify(session[:zipcode], session[:user_name], params[:password], params[:new_password])
+    @modify_result = User.modify(params[:zipcode], params[:user_name], params[:password], params[:new_password])
     render json: @modify_result
   end  
 end
